@@ -17,22 +17,30 @@ else:
 
 
 
-
-
-
-
 @app.route('/uploads',  methods=["POST", "GET"])
 def uploads():
     file=request.files['file']
-	filename=""
+	# filename=""
     username = request.form['username']
-	if file.filename!='':
+	if file.filename != '':
 		filename=secure_filename(file.filename)
 		file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))#check file name
 		# filename	
-		print('uploaded')
-		assignment.add_userass(c,user_id,ass_id,str(datetime.now()),file.filename)
-		conn.commit()
+        c.execute('select uploads from user where username = ?', (username,))
+        list_fn = c.fetchone()
+		if(list_fn != None):
+            list_fn = list_fn.split('#')
+        else :
+            list_fn = []
+        list_fn.append(filename)
+        listfn = '#'.join(list_fn)
+        
+        c.execute('update table user set uploads = ? where username = ?', (listfn, username,))
+        print('uploaded')
+		
+        
+        conn.commit()
+
 		flash("Assignment Submitted")
 	# return url_for('send',data="",file=file_name)
 	return redirect(url_for("viewAss",cls_id=ass_id.split("_")[-2]))
