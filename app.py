@@ -17,11 +17,11 @@ else:
 
 
 
-@app.route('/uploads',  methods=["POST", "GET"])
-def uploads():
+@app.route('/uploads/<username>',  methods=["POST", "GET"])
+def uploads(username):
     file=request.files['file']
 	# filename=""
-    username = request.form['username']
+    # username = request.form['username']
 	if file.filename != '':
 		filename=secure_filename(file.filename)
 		file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))#check file name
@@ -60,7 +60,7 @@ def login():
     if password != result[2]:
         flash('Invalid password')
         return redirect('/')
-    return redirect('/uploads')
+    return redirect(f'/uploads/{username}')
 
 @app.route('/register', methods=["POST", "GET"])
 def register():
