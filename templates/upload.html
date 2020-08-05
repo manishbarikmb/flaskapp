@@ -1,0 +1,12 @@
+<html>
+  <head>
+    Text File Upload website
+  </head>
+  <body>
+    <form method="post" action='/uploads' enctype="multipart/form-data">
+    <input type="file" id="file" name="file" >
+	<label for="file" class="btn btn-primary" ><b>Upload File</b></label>
+    <input type="hidden" name="username" id="ass" value="{{ username }}">
+    <button type="submit">Upload</button>
+  </body>
+</html>
